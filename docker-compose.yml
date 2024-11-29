@@ -1,0 +1,20 @@
+version: '3'
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+    ports:
+      - "5775:5775/udp"  # Agent receives traces
+      - "6831:6831/udp"  # Agent receives traces
+      - "6832:6832/udp"  # Agent receives traces
+      - "5778:5778"      # Agent config HTTP endpoint
+      - "16686:16686"    # UI access
+      - "14268:14268"    # HTTP trace submission
+      - "9411:9411"      # Zipkin compatibility
+    networks:
+      - jaeger-network
+networks:
+  jaeger-network:
+    driver: bridge
