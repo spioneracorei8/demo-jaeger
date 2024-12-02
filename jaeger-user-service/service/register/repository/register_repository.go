@@ -2,8 +2,8 @@ package repository
 
 import (
 	"context"
-	"jaeger-auth-service/models"
-	"jaeger-auth-service/service/register"
+	"jarger-user-service/models"
+	"jarger-user-service/service/register"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -18,10 +18,10 @@ func NewPsqlRegisterRepositoryImpl(db *sqlx.DB) register.RegisterRepository {
 	}
 }
 
-func (r *registerRepository) FetchAccountByUsername(ctx context.Context, username, sourse string) (*models.Account, error) {
+func (r *registerRepository) FetchUserByUsername(ctx context.Context, username, sourse string) (*models.User, error) {
 	var (
 		sql     string
-		account models.Account
+		account models.User
 		err     error
 	)
 	sql = `
