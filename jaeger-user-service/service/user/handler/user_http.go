@@ -5,7 +5,7 @@ import (
 	"jarger-user-service/models"
 )
 
-func unmarshal(s string) (*models.User, error) {
+func unmarshalUser(s string) (*models.User, error) {
 	var (
 		user = new(models.User)
 		err     error

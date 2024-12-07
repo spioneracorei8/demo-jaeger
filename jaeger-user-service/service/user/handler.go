@@ -1,4 +1,4 @@
-package register
+package user
 
 import "github.com/gofiber/fiber/v2"
 

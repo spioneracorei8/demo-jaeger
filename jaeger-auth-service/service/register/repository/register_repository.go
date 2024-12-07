@@ -18,7 +18,7 @@ func NewPsqlRegisterRepositoryImpl(db *sqlx.DB) register.RegisterRepository {
 	}
 }
 
-func (r *registerRepository) FetchAccountByUsername(ctx context.Context, username, sourse string) (*models.Account, error) {
+func (r *registerRepository) FetchAccountByUsername(ctx context.Context, username, source string) (*models.Account, error) {
 	var (
 		sql     string
 		account models.Account
@@ -30,7 +30,7 @@ func (r *registerRepository) FetchAccountByUsername(ctx context.Context, usernam
 	WHERE username = ? AND web_access = ?
 	`
 	sql = sqlx.Rebind(sqlx.DOLLAR, sql)
-	if err = r.db.GetContext(ctx, &account, sql, username, sourse); err != nil {
+	if err = r.db.GetContext(ctx, &account, sql, username, source); err != nil {
 		return nil, err
 	}
 

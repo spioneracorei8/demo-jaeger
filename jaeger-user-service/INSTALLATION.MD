@@ -25,3 +25,17 @@ go get github.com/lib/pq
 ```bash
 go get github.com/jmoiron/sqlx
 ```
+
+## GRPC
+```bash
+go get -u google.golang.org/grpc
+```
+```bash
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+```
+```bash
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+```
+```bash
+go get github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery
+```

@@ -16,6 +16,6 @@ func NewRegisterUseaseImpl(registerRepo register.RegisterRepository) register.Re
 	}
 }
 
-func (u *registerUsecase) FetchAccountByUsername(ctx context.Context, username, sourse string) (*models.Account, error) {
-	return u.registerRepo.FetchAccountByUsername(ctx, username, sourse)
+func (u *registerUsecase) FetchAccountByUsername(ctx context.Context, username, source string) (*models.Account, error) {
+	return u.registerRepo.FetchAccountByUsername(ctx, username, source)
 }

@@ -21,7 +21,7 @@ func NewRegisterHandlerImpl(registerUs register.RegisterUsecase) register.Regist
 func (h *registerHandler) FetchAccountByUsername(c *fiber.Ctx) error {
 	var (
 		rawJson = c.FormValue("data")
-		sourse  = c.Get("sourse")
+		source  = c.Get("source")
 		account = new(models.Account)
 		ctx     = context.Background()
 		err     error
@@ -34,7 +34,7 @@ func (h *registerHandler) FetchAccountByUsername(c *fiber.Ctx) error {
 		})
 	}
 
-	if account, err = h.registerUs.FetchAccountByUsername(ctx, account.Username, sourse); err != nil {
+	if account, err = h.registerUs.FetchAccountByUsername(ctx, account.Username, source); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error":  err.Error(),
 			"status": "InternalServerError",

@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"jarger-user-service/models"
-	"jarger-user-service/service/register"
+	register "jarger-user-service/service/user"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -18,7 +18,7 @@ func NewPsqlRegisterRepositoryImpl(db *sqlx.DB) register.RegisterRepository {
 	}
 }
 
-func (r *registerRepository) FetchUserByUsername(ctx context.Context, username, sourse string) (*models.User, error) {
+func (r *registerRepository) FetchUserByUsername(ctx context.Context, username, source string) (*models.User, error) {
 	var (
 		sql     string
 		account models.User
@@ -30,7 +30,7 @@ func (r *registerRepository) FetchUserByUsername(ctx context.Context, username, 
 	WHERE username = ? AND web_access = ?
 	`
 	sql = sqlx.Rebind(sqlx.DOLLAR, sql)
-	if err = r.db.GetContext(ctx, &account, sql, username, sourse); err != nil {
+	if err = r.db.GetContext(ctx, &account, sql, username, source); err != nil {
 		return nil, err
 	}
 

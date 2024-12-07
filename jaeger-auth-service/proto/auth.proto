@@ -1,0 +1,20 @@
+syntax = "proto3";
+option go_package="./proto_models";
+package proto;
+
+message AuthRequest {
+    string username = 1;
+    string source = 2;
+}
+
+message AuthResponse {
+    string id = 1;
+    string user_id = 2;
+    string status = 3;
+    string web_access = 4;
+    string revoke_token_code = 5;
+}
+
+service Auth {
+    rpc FetchAccountByUsername(AuthRequest) returns (AuthResponse) {}
+}

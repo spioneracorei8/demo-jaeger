@@ -3,9 +3,11 @@ package server
 import (
 	"fmt"
 	"jarger-user-service/routes"
-	_register_handler "jarger-user-service/service/register/handler"
-	_register_repo "jarger-user-service/service/register/repository"
-	_register_us "jarger-user-service/service/register/usecase"
+	_auth_handler "jarger-user-service/service/auth/repository"
+	_auth_us "jarger-user-service/service/auth/usecase"
+	_user_handler "jarger-user-service/service/user/handler"
+	_user_repo "jarger-user-service/service/user/repository"
+	_user_us "jarger-user-service/service/user/usecase"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
@@ -18,6 +20,10 @@ type Server struct {
 
 	DRIVER_NAME          string
 	PSQL_CONNECTION_USER string
+
+	SERVICE_CLIENT_AUTH_GRPC_ADDRESS string
+	GRPC_TIMEOUT                     int
+	GRPC_MAX_RECEIVE_SIZE            int
 }
 
 func connectPSQL(driverName, conn string) *sqlx.DB {
@@ -35,19 +41,25 @@ func (s *Server) Start() {
 	var (
 		app    *fiber.App
 		psqlDB *sqlx.DB
+		// grpcMaxReceiveSize = (1024 * 1024) * s.GRPC_MAX_RECEIVE_SIZE
 	)
 	app = fiber.New()
 
 	psqlDB = connectPSQL(s.DRIVER_NAME, s.PSQL_CONNECTION_USER)
 
+	// server := grpc.NewServer(grpc.MaxRecvMsgSize(grpcMaxReceiveSize))
+	// defer server.GracefulStop()
+
 	// # REPOSITORIES
-	registerRepo := _register_repo.NewPsqlRegisterRepositoryImpl(psqlDB)
+	registerRepo := _user_repo.NewPsqlRegisterRepositoryImpl(psqlDB)
+	authRepo := _auth_handler.NewGrpcAuthRepositoryImpl(s.SERVICE_CLIENT_AUTH_GRPC_ADDRESS, s.GRPC_TIMEOUT)
 
 	// # USECASES
-	registerUs := _register_us.NewRegisterUseaseImpl(registerRepo)
+	registerUs := _user_us.NewRegisterUseaseImpl(registerRepo)
+	authUs := _auth_us.NewGrpcAuthUsecaseImpl(authRepo)
 
 	// # HANDLERS
-	registerHandler := _register_handler.NewRegisterHandlerImpl(registerUs)
+	registerHandler := _user_handler.NewRegisterHandlerImpl(registerUs, authUs)
 
 	// # init fiber
 
