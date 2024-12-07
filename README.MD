@@ -15,6 +15,3 @@ check cmd
 
 
 ``protoc-gen-go: protoc-gen-go v1.25.0-devel ``
-
-
-protoc --go_out=/home/spioneraera/Documents/me/docker/jaeger/jaeger-auth-service/proto     --go-grpc_out=/home/spioneraera/Documents/me/docker/jaeger/jaeger-auth-service/proto     proto/auth.proto
