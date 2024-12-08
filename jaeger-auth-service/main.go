@@ -7,10 +7,14 @@ import (
 
 func getMainServer() server.Server {
 	return server.Server{
-		APP_PORT:             config.APP_PORT,
-		ROOT_PATH:            config.ROOT_PATH,
-		DRIVER_NAME:          config.DRIVER_NAME,
-		PSQL_CONNECTION_AUTH: config.PSQL_CONNECTION_AUTH,
+		ROOT_PATH:                        config.ROOT_PATH,
+		APP_PORT:                         config.APP_PORT,
+		GRPC_PORT:                        config.GRPC_PORT,
+		GRPC_TIMEOUT:                     config.GRPC_TIMEOUT,
+		GRPC_MAX_RECEIVE_SIZE:            config.GRPC_MAX_RECEIVE_SIZE,
+		SERVICE_SERVER_USER_GRPC_ADDRESS: config.SERVICE_SERVER_USER_GRPC_ADDRESS,
+		DRIVER_NAME:                      config.DRIVER_NAME,
+		PSQL_CONNECTION_AUTH:             config.PSQL_CONNECTION_AUTH,
 	}
 }
 

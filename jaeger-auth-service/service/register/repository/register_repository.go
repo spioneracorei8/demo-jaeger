@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"jaeger-auth-service/models"
 	"jaeger-auth-service/service/register"
 
@@ -24,6 +25,8 @@ func (r *registerRepository) FetchAccountByUsername(ctx context.Context, usernam
 		account models.Account
 		err     error
 	)
+	fmt.Println("username", username)
+	fmt.Println("source", source)
 	sql = `
 	SELECT *
 	FROM account
