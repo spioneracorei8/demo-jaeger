@@ -14,10 +14,11 @@ import (
 var (
 	APP_PORT             string
 	ROOT_PATH            string
+	GRPC_PORT            string
 	PSQL_CONNECTION_USER string
 	DRIVER_NAME          string
 
-	SERVICE_CLIENT_AUTH_GRPC_ADDRESS string
+	SERVICE_SERVER_AUTH_GRPC_ADDRESS string
 	GRPC_TIMEOUT                     int
 	GRPC_MAX_RECEIVE_SIZE            int
 
@@ -38,11 +39,11 @@ func init() {
 		ROOT_PATH = strings.Replace(basepath, "/config", "", index)
 	}
 	APP_PORT = helper.GetENV("APP_PORT", "")
-
+	GRPC_PORT = helper.GetENV("GRPC_PORT", "")
 	DRIVER_NAME = helper.GetENV("DRIVER_NAME", "")
 	PSQL_CONNECTION_USER = helper.GetENV("PSQL_CONNECTION_USER", "")
 
-	SERVICE_CLIENT_AUTH_GRPC_ADDRESS = helper.GetENV("SERVICE_CLIENT_AUTH_GRPC_ADDRESS", "")
+	SERVICE_SERVER_AUTH_GRPC_ADDRESS = helper.GetENV("SERVICE_SERVER_AUTH_GRPC_ADDRESS", "")
 	if GRPC_TIMEOUT, err = strconv.Atoi(helper.GetENV("GRPC_TIMEOUT", "")); err != nil {
 		panic(fmt.Sprintf("Error while convert type: %s", err.Error()))
 	}

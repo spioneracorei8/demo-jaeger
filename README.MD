@@ -3,15 +3,20 @@
 ### VERSION
 check cmd
 
-- go version
-
+```bash
+go version
+```
+- example output: 
 ``go: 1.23.3``
 
-- protoc --version
-
+```bash
+protoc --version
+```
+- example output: 
 ``protoc: libprotoc 3.14.0``
 
-- protoc-gen-go --version
-
-
+```bash
+protoc-gen-go --version
+```
+- example output: 
 ``protoc-gen-go: protoc-gen-go v1.25.0-devel ``

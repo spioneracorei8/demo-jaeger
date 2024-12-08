@@ -13,6 +13,7 @@ import (
 type grpcAuthRepository struct {
 	grpcAddress string
 	timeout     int
+	proto_models.UnimplementedAuthServer
 }
 
 func NewGrpcAuthRepositoryImpl(grpcAddress string, timeout int) auth.GrpcAuthRepository {

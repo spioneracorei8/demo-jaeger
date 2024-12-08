@@ -39,6 +39,18 @@ func (h *registerHandler) FetchUserByUsername(c *fiber.Ctx) error {
 			"status": "BadRequest",
 		})
 	}
+	if source == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error":  "source cannot be empty.",
+			"status": "BadRequest",
+		})
+	}
+	if user.Username == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error":  "username cannot be empty.",
+			"status": "BadRequest",
+		})
+	}
 
 	if authResponse, err = h.authUs.FetchAccountByUsername(ctx, user.Username, source); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
