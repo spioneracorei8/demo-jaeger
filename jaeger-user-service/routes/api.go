@@ -16,7 +16,7 @@ func NewRoute(c *fiber.App) *Route {
 	}
 }
 
-func (r *Route) RegisterRoutes(h _user_handler.RegisterHandler) {
+func (r *Route) UserRoutes(h _user_handler.UserHandler) {
 	api := r.c.Group("/api")
 
 	api.Post("/v1/username", h.FetchUserByUsername)

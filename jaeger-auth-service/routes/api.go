@@ -1,7 +1,6 @@
 package routes
 
 import (
-	_register_handler "jaeger-auth-service/service/register"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,8 +15,7 @@ func NewRoute(c *fiber.App) *Route {
 	}
 }
 
-func (r *Route) RegisterRoutes(h _register_handler.RegisterHandler) {
-	api := r.c.Group("/api")
+func (r *Route) RegisterRoutes() {
+	_ = r.c.Group("/api")
 
-	api.Post("/v1/username", h.FetchAccountByUsername)
 }

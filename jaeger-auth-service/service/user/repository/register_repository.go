@@ -2,31 +2,29 @@ package repository
 
 import (
 	"context"
-	"fmt"
+	"jaeger-auth-service/constant"
 	"jaeger-auth-service/models"
-	"jaeger-auth-service/service/register"
+	"jaeger-auth-service/service/user"
 
 	"github.com/jmoiron/sqlx"
 )
 
-type registerRepository struct {
+type userRepository struct {
 	db *sqlx.DB
 }
 
-func NewPsqlRegisterRepositoryImpl(db *sqlx.DB) register.RegisterRepository {
-	return &registerRepository{
+func NewPsqlUserRepositoryImpl(db *sqlx.DB) user.UserRepository {
+	return &userRepository{
 		db: db,
 	}
 }
 
-func (r *registerRepository) FetchAccountByUsername(ctx context.Context, username, source string) (*models.Account, error) {
+func (r *userRepository) FetchAccountByUsername(ctx context.Context, username, source string) (*models.Account, error) {
 	var (
 		sql     string
 		account models.Account
 		err     error
 	)
-	fmt.Println("username", username)
-	fmt.Println("source", source)
 	sql = `
 	SELECT *
 	FROM account
@@ -34,6 +32,9 @@ func (r *registerRepository) FetchAccountByUsername(ctx context.Context, usernam
 	`
 	sql = sqlx.Rebind(sqlx.DOLLAR, sql)
 	if err = r.db.GetContext(ctx, &account, sql, username, source); err != nil {
+		if err.Error() == constant.SQL_NO_REC {
+			return nil, nil
+		}
 		return nil, err
 	}
 

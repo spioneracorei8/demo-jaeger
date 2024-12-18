@@ -3,10 +3,9 @@ package server
 import (
 	"fmt"
 	"jaeger-auth-service/routes"
-	_register_grpc "jaeger-auth-service/service/register/grpc"
-	_register_handler "jaeger-auth-service/service/register/handler"
-	_register_repo "jaeger-auth-service/service/register/repository"
-	_register_usecase "jaeger-auth-service/service/register/usecase"
+	_user_grpc "jaeger-auth-service/service/user/grpc"
+	_user_repo "jaeger-auth-service/service/user/repository"
+	_user_usecase "jaeger-auth-service/service/user/usecase"
 	"net"
 
 	"github.com/gofiber/fiber/v2"
@@ -78,18 +77,17 @@ func (s *Server) Start() {
 	//==============================================================
 	// # Repositoryies
 	//==============================================================
-	registerRepo := _register_repo.NewPsqlRegisterRepositoryImpl(psqlDB)
+	userRepo := _user_repo.NewPsqlUserRepositoryImpl(psqlDB)
 
 	//==============================================================
 	// # Usecases
 	//==============================================================
-	registerUs := _register_usecase.NewRegisterUseaseImpl(registerRepo)
+	userUs := _user_usecase.NewUserUseaseImpl(userRepo)
 
 	//==============================================================
 	// # Handlers
 	//==============================================================
-	registerHandler := _register_handler.NewRegisterHandlerImpl(registerUs)
-	registerGrpcHandler := _register_grpc.NewGrpcAuthHandler(registerUs)
+	userGrpcHandler := _user_grpc.NewGrpcAuthHandler(userUs)
 
 	//==============================================================
 	// # Fiber Routes
@@ -98,13 +96,13 @@ func (s *Server) Start() {
 		return c.SendString("Hello jarger.")
 	})
 	api := routes.NewRoute(app)
-	api.RegisterRoutes(registerHandler)
+	api.RegisterRoutes()
 
 	//==============================================================
 	// # Grpc Routes
 	//==============================================================
 	grpcRoute := routes.NewGrpcRoute(grpcServer)
-	grpcRoute.RegisterAuthRoutes(registerGrpcHandler)
+	grpcRoute.RegisterAuthRoutes(userGrpcHandler)
 
 	go func() {
 		if r := recover(); r != nil {

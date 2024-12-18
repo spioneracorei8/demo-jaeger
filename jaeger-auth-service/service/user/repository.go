@@ -1,10 +1,10 @@
-package register
+package user
 
 import (
 	"context"
 	"jaeger-auth-service/models"
 )
 
-type RegisterUsecase interface {
+type UserRepository interface {
 	FetchAccountByUsername(ctx context.Context, username, source string) (*models.Account, error)
 }

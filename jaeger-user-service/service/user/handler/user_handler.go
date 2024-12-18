@@ -6,24 +6,22 @@ import (
 	"jarger-user-service/models"
 	"jarger-user-service/proto/proto_models"
 	"jarger-user-service/service/auth"
-	register "jarger-user-service/service/user"
+	"jarger-user-service/service/user"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-type registerHandler struct {
-	registerUs register.RegisterUsecase
-	authUs     auth.AuthUsecase
+type userHandler struct {
+	authUs auth.AuthUsecase
 }
 
-func NewRegisterHandlerImpl(registerUs register.RegisterUsecase, authUs auth.AuthUsecase) register.RegisterHandler {
-	return &registerHandler{
-		registerUs: registerUs,
-		authUs:     authUs,
+func NewUserHandlerImpl(authUs auth.AuthUsecase) user.UserHandler {
+	return &userHandler{
+		authUs: authUs,
 	}
 }
 
-func (h *registerHandler) FetchUserByUsername(c *fiber.Ctx) error {
+func (h *userHandler) FetchUserByUsername(c *fiber.Ctx) error {
 	var (
 		rawJson      = c.FormValue("data")
 		source       = c.Get("source")

@@ -3,17 +3,17 @@ package grpc
 import (
 	"context"
 	"jaeger-auth-service/proto/proto_models"
-	"jaeger-auth-service/service/register"
+	"jaeger-auth-service/service/user"
 )
 
 type grpcAuthHandler struct {
-	regsiterUs register.RegisterUsecase
+	userUs user.UserUsecase
 	proto_models.UnimplementedAuthServer
 }
 
-func NewGrpcAuthHandler(regsiterUs register.RegisterUsecase) proto_models.AuthServer {
+func NewGrpcAuthHandler(userUs user.UserUsecase) proto_models.AuthServer {
 	return &grpcAuthHandler{
-		regsiterUs: regsiterUs,
+		userUs: userUs,
 	}
 }
 
@@ -22,7 +22,7 @@ func (g *grpcAuthHandler) FetchAccountByUsername(ctx context.Context, request *p
 		return &proto_models.AuthResponse{}, nil
 	}
 
-	account, err := g.regsiterUs.FetchAccountByUsername(ctx, request.Username, request.Source)
+	account, err := g.userUs.FetchAccountByUsername(ctx, request.Username, request.Source)
 	if err != nil {
 		return nil, err
 	}

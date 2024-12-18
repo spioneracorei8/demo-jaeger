@@ -6,8 +6,6 @@ import (
 	_auth_handler "jarger-user-service/service/auth/repository"
 	_auth_us "jarger-user-service/service/auth/usecase"
 	_user_handler "jarger-user-service/service/user/handler"
-	_user_repo "jarger-user-service/service/user/repository"
-	_user_us "jarger-user-service/service/user/usecase"
 	"net"
 
 	"github.com/gofiber/fiber/v2"
@@ -71,26 +69,26 @@ func (s *Server) Start() {
 	})
 
 	psqlDB = connectPSQL(s.DRIVER_NAME, s.PSQL_CONNECTION_USER)
-
+	fmt.Println(psqlDB)
 	grpcServer := grpc.NewServer(grpc.MaxRecvMsgSize(grpcMaxReceiveSize))
 	defer grpcServer.GracefulStop()
 
 	//==============================================================
 	// # Repositoryies
 	//==============================================================
-	registerRepo := _user_repo.NewPsqlRegisterRepositoryImpl(psqlDB)
+	// userRepo := _user_repo.NewPsqlUserRepositoryImpl(psqlDB)
 	authRepo := _auth_handler.NewGrpcAuthRepositoryImpl(s.SERVICE_SERVER_AUTH_GRPC_ADDRESS, s.GRPC_TIMEOUT)
 
 	//==============================================================
 	// # Usecases
 	//==============================================================
-	registerUs := _user_us.NewRegisterUseaseImpl(registerRepo)
+	// userUs := _user_us.NewUserUseaseImpl(userRepo)
 	authUs := _auth_us.NewGrpcAuthUsecaseImpl(authRepo)
 
 	//==============================================================
 	// # Handlers
 	//==============================================================
-	registerHandler := _user_handler.NewRegisterHandlerImpl(registerUs, authUs)
+	userHandler := _user_handler.NewUserHandlerImpl(authUs)
 
 	//==============================================================
 	// # Fiber Routes
@@ -99,7 +97,7 @@ func (s *Server) Start() {
 		return c.SendString("Hello jarger.")
 	})
 	api := routes.NewRoute(app)
-	api.RegisterRoutes(registerHandler)
+	api.UserRoutes(userHandler)
 
 	//==============================================================
 	// # Grpc Routes
